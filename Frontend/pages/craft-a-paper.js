@@ -22,9 +22,9 @@ function SaveIndicator({ status }) {
   if (status === 'idle') return null;
 
   const config = {
-    saving: { text: 'Savingâ€¦', className: 'text-gray-500' },
+    saving: { text: 'Saving...', className: 'text-gray-500' },
     saved: { text: 'Draft saved', className: 'text-green-600' },
-    error: { text: 'Not saved â€” will retry', className: 'text-red-600' },
+    error: { text: 'Not saved - will retry', className: 'text-red-600' },
   }[status];
 
   if (!config) return null;
@@ -58,14 +58,14 @@ const SLOT_NUMBER = { q1: 1, q2: 2, q3: 3, q4: 4, q5: 5, q6: 6, q7: 7, q8: 8, q9
 
 // Per-section exam-paper copy (header title + sub-line), reused in palette and canvas.
 const SECTION_META = {
-  A: { title: 'Multiple Choice Questions', note: '4 Questions Ã— 1 Mark = 4 Marks (Objective Type)' },
-  B: { title: 'Very Short Answer', note: '2 Questions Ã— 2 Marks = 4 Marks (30-50 words)' },
-  C: { title: 'Short Answer', note: '1 Question Ã— 3 Marks = 3 Marks (50-80 words)' },
-  D: { title: 'Long Answer', note: '1 Question Ã— 5 Marks = 5 Marks (80-120 words, 3 sub-parts)' },
-  E: { title: 'Case-Based Assessment', note: '1 Question Ã— 4 Marks = 4 Marks (Table with hints + sub-questions)' },
+  A: { title: 'Multiple Choice Questions', note: '4 Questions x 1 Mark = 4 Marks (Objective Type)' },
+  B: { title: 'Very Short Answer', note: '2 Questions x 2 Marks = 4 Marks (30-50 words)' },
+  C: { title: 'Short Answer', note: '1 Question x 3 Marks = 3 Marks (50-80 words)' },
+  D: { title: 'Long Answer', note: '1 Question x 5 Marks = 5 Marks (80-120 words, 3 sub-parts)' },
+  E: { title: 'Case-Based Assessment', note: '1 Question x 4 Marks = 4 Marks (Table with hints + sub-questions)' },
 };
 
-// Drag payload key â€” native HTML5 DnD, same pattern as the diagram drag in this file.
+// Drag payload key - native HTML5 DnD, same pattern as the diagram drag in this file.
 const QP_SLOT_MIME = 'application/x-qp-slot';
 
 // One reusable per-slot editor card. Renders identically to the old inline Qn. row
@@ -137,7 +137,7 @@ function QuestionSlotCard({
                 onClick={() => onRemoveImage(slot, idx)}
                 className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white opacity-0 transition hover:bg-red-600 group-hover:opacity-100"
               >
-                Ã—
+                x
               </button>
             </div>
           ))}
@@ -149,7 +149,7 @@ function QuestionSlotCard({
           title="Remove from paper"
           className="h-6 w-6 shrink-0 self-start rounded-full bg-gray-200 text-sm font-bold text-gray-600 transition hover:bg-red-100 hover:text-red-600"
         >
-          Ã—
+          x
         </button>
       )}
     </div>
@@ -166,7 +166,7 @@ function TokenUsage({ tokenUsage }) {
         Tokens used: {Number(tokenUsage.total_tokens || 0).toLocaleString()}
       </p>
       <p className="text-gray-500">
-        input {Number(tokenUsage.input_tokens || 0).toLocaleString()} Â· output{' '}
+        input {Number(tokenUsage.input_tokens || 0).toLocaleString()} - output{' '}
         {Number(tokenUsage.output_tokens || 0).toLocaleString()}
       </p>
       {modelKeys.length > 0 && (
@@ -195,7 +195,7 @@ function GeneratedQuestion({ question, index }) {
         </span>
       </div>
       <p className="mt-1 text-[11px] text-gray-400">
-        {question.chapter} Â· {question.domain} Â· {question.marks} mark
+        {question.chapter} - {question.domain} - {question.marks} mark
         {Number(question.marks) === 1 ? '' : 's'}
       </p>
 
@@ -253,7 +253,6 @@ function GenerationResults({ snapshot, error }) {
     return (
       <div className="flex min-h-[200px] items-center justify-center py-10">
         <div className="text-center text-gray-500">
-          <div className="mb-4 text-6xl">ðŸ‘ï¸</div>
           <p className="text-lg font-medium">AI Assistance</p>
           <p className="mt-2 text-sm text-gray-400">
             Click Generate Paper to start creating questions.
@@ -275,7 +274,7 @@ function GenerationResults({ snapshot, error }) {
       {status === 'generating' && (
         <div className="flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700">
           <span className="inline-block h-3 w-3 animate-pulse rounded-full bg-blue-500" />
-          Generating questionsâ€¦
+          Generating questions...
         </div>
       )}
       {status === 'completed' && (
@@ -463,7 +462,7 @@ export default function CraftAPaper({ user }) {
   // Placed count for a section's live summary chip.
   const placedCount = (sec) => SECTION_SLOTS[sec].filter((s) => placedSlots[s]).length;
 
-  // Drag handlers â€” native HTML5 DnD, mirroring the diagram drag pattern in this file.
+  // Drag handlers - native HTML5 DnD, mirroring the diagram drag pattern in this file.
   const handleCardDragStart = (e, slot) => {
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData(QP_SLOT_MIME, slot);
@@ -1079,7 +1078,7 @@ export default function CraftAPaper({ user }) {
       return;
     }
 
-    // Chapter options not loaded yet â€” wait for the re-run once they are.
+    // Chapter options not loaded yet - wait for the re-run once they are.
     if (chapters.length === 0) {
       return;
     }
@@ -1252,8 +1251,8 @@ export default function CraftAPaper({ user }) {
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition flex-1">
                             {draft.examType && `${draft.examType}`}
-                            {draft.grade && ` â€¢ ${draft.grade}`}
-                            {draft.subject && ` â€¢ ${draft.subject}`}
+                            {draft.grade && ` - ${draft.grade}`}
+                            {draft.subject && ` - ${draft.subject}`}
                           </h3>
                           <div className="flex items-center gap-2">
                             <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded font-medium">
@@ -1265,7 +1264,7 @@ export default function CraftAPaper({ user }) {
                               className="text-xs px-2 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded font-medium transition opacity-0 group-hover:opacity-100 disabled:opacity-50"
                               title="Delete draft"
                             >
-                              {deletingDraftId === draft.draftId ? 'Deleting...' : 'âœ• Delete'}
+                              {deletingDraftId === draft.draftId ? 'Deleting...' : 'Delete'}
                             </button>
                           </div>
                         </div>
@@ -1300,7 +1299,6 @@ export default function CraftAPaper({ user }) {
           {backendStatus === 'offline' && (
             <div className="bg-yellow-50 border-b border-yellow-200 px-6 py-3">
               <div className="flex items-center gap-2 text-sm text-yellow-800">
-                <span className="text-lg">âš ï¸</span>
                 <span>
                   <strong>Backend Offline:</strong> Using mock data for development. Real diagrams and data will sync when backend is running at <code className="bg-yellow-100 px-2 py-1 rounded font-mono text-xs">http://localhost:8000</code>
                 </span>
@@ -1334,7 +1332,7 @@ export default function CraftAPaper({ user }) {
                 onClick={() => handleStepChange(2)}
                 className="text-sm text-gray-500 hover:text-gray-700 font-medium px-4 py-2"
               >
-                â† Back
+                Back
               </button>
               <button
                 onClick={handleBackToHome}
@@ -1346,9 +1344,9 @@ export default function CraftAPaper({ user }) {
           </div>
 
           {/* 4-Region Grid - Full Height: Diagrams | Section Palette | Question Paper | AI Assistance */}
-          <div className="flex-1 grid grid-cols-12 gap-0 overflow-hidden">
+          <div className="flex-1 grid grid-cols-12 gap-4 p-4 overflow-hidden">
             {/* Left Panel: Diagram Selection */}
-            <div className="col-span-2 bg-gray-50 border-r border-gray-200 overflow-hidden flex flex-col">
+            <div className="col-span-3 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
                 <h2 className="text-lg font-semibold text-gray-900">
                   Diagrams
@@ -1428,7 +1426,7 @@ export default function CraftAPaper({ user }) {
             </div>
 
             {/* Section Palette: each section shows ONLY its own UNPLACED questions. */}
-            <div className="col-span-3 bg-gray-50 border-r border-gray-200 overflow-hidden flex flex-col">
+            <div className="col-span-5 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
                 <h2 className="text-lg font-semibold text-gray-900">Question Bank</h2>
                 <p className="text-xs text-gray-500 mt-1">
@@ -1481,6 +1479,11 @@ export default function CraftAPaper({ user }) {
             </div>
 
             {/* Middle Panel: Canvas 1 - Question Paper (central assembly canvas) */}
+            {/* DISABLED: the Question Paper canvas (header, A-E placement counters,
+                the five section-locked drop zones, and the total footer) is gated
+                behind `false &&` so it no longer renders. Flip to `true &&` (or
+                remove the guard) to bring it back. */}
+            {false && (
             <div className="col-span-4 bg-white border-r border-gray-200 overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
                 <h2 className="text-lg font-semibold text-gray-900">
@@ -1509,7 +1512,7 @@ export default function CraftAPaper({ user }) {
                 </div>
               </div>
 
-              {/* Question Paper Content: five section-locked drop zones, always Aâ†’E order. */}
+              {/* Question Paper Content: five section-locked drop zones, always A->E order. */}
               <div className="flex-1 overflow-y-auto p-8 bg-white">
                 <div className="max-w-2xl space-y-6">
                   {SECTION_ORDER.map((sec) => {
@@ -1573,9 +1576,10 @@ export default function CraftAPaper({ user }) {
                 </div>
               </div>
             </div>
+            )}
 
-            {/* Right Panel: Canvas 2 — AI Assistance (generation progress, unchanged meaning) */}
-            <div className="col-span-3 bg-white overflow-hidden flex flex-col">
+            {/* Right Panel: Canvas 2 - AI Assistance (generation progress, unchanged meaning) */}
+            <div className="col-span-4 bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
                 <h2 className="text-lg font-semibold text-gray-900">
                   AI Assistance
@@ -1609,10 +1613,10 @@ export default function CraftAPaper({ user }) {
               disabled={genStatus?.status === 'generating'}
               className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition"
             >
-              {genStatus?.status === 'generating' ? 'â³ Generatingâ€¦' : 'âœ¨ Generate Paper'}
+              {genStatus?.status === 'generating' ? 'Generating...' : 'Generate Paper'}
             </button>
             <button className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition">
-              ðŸ“¥ Download Paper
+              Download Paper
             </button>
           </div>
         </div>
@@ -1652,7 +1656,7 @@ export default function CraftAPaper({ user }) {
               onClick={handleBackToHome}
               className="text-sm text-gray-600 hover:text-gray-900 font-medium border border-gray-300 rounded-lg px-3 py-1.5"
             >
-              â† Back to Home
+              Back to Home
             </button>
           </div>
         </div>
@@ -1693,7 +1697,7 @@ export default function CraftAPaper({ user }) {
                           {exam.code}
                         </div>
                         <div className="text-sm text-gray-600">
-                          {exam.name} â€” {exam.marks} marks
+                          {exam.name} - {exam.marks} marks
                         </div>
                       </button>
                     ))}
@@ -1917,17 +1921,17 @@ export default function CraftAPaper({ user }) {
                     {/* Status Messages */}
                     {totalAllocated < totalMarks && (
                       <p className="mt-2 text-sm text-yellow-700 bg-yellow-50 p-2 rounded">
-                        âš ï¸ {totalMarks - totalAllocated} marks remaining. Please allocate all marks.
+                        {totalMarks - totalAllocated} marks remaining. Please allocate all marks.
                       </p>
                     )}
                     {totalAllocated > totalMarks && (
                       <p className="mt-2 text-sm text-red-700 bg-red-50 p-2 rounded">
-                        âŒ {totalAllocated - totalMarks} marks over the limit. Please reduce.
+                        {totalAllocated - totalMarks} marks over the limit. Please reduce.
                       </p>
                     )}
                     {totalAllocated === totalMarks && (
                       <p className="mt-2 text-sm text-green-700 bg-green-50 p-2 rounded">
-                        âœ… All marks allocated correctly!
+                        All marks allocated correctly!
                       </p>
                     )}
                   </div>
