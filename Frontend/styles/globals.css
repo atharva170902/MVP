@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== G.R.A.D.E Netflix-style intro ===== */
+
+/* The logo starts small/dim, then zooms up big toward the viewer. */
+@keyframes gradeZoom {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.15;
+    filter: brightness(0.4);
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    filter: brightness(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+    filter: brightness(1.6);
+  }
+}
+
+/* Bright glow sweeps left-to-right through the letters, Netflix-style. */
+@keyframes gradeShine {
+  0% {
+    background-position: -150% 50%;
+  }
+  100% {
+    background-position: 250% 50%;
+  }
+}
+
+/* Full name rises and fades in beneath the logo, then fades out. */
+@keyframes gradeSubReveal {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  45%,
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+/* Whole overlay fades away at the end to reveal the app. */
+@keyframes gradeOverlayOut {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.grade-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+
+  /* Wallpaper image, lightened with a soft white wash so the logo reads well. */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)),
+    url("/welcome-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.grade-overlay--dismiss {
+  animation: gradeOverlayOut 0.6s ease forwards;
+  animation-delay: 3s;
+  pointer-events: none;
+}
+
+.grade-logo {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: clamp(3rem, 15vw, 9rem);
+  line-height: 1;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+  animation: gradeZoom 3.4s cubic-bezier(0.55, 0, 0.3, 1) forwards;
+
+  /* Fill the letters with the generated image. */
+  background-image: url("/grade-logo-fill.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.grade-logo::after {
+  /* Second layer purely for the moving shine highlight. */
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradeShine 2.2s ease-in-out forwards;
+  animation-delay: 0.3s;
+}
+
+.grade-logo-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.grade-fullname {
+  margin-top: 1.75rem;
+  max-width: 90vw;
+  font-size: clamp(0.8rem, 2.4vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1e293b;
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  animation: gradeSubReveal 3.4s ease forwards;
+}
+
+/* ===== Question-paper placement pop ===== */
+
+/* A question card gently pops into place when dropped into the central paper. */
+@keyframes qpCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.qp-card-in {
+  animation: qpCardIn 0.22s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grade-overlay--dismiss,
+  .grade-logo,
+  .grade-logo::after,
+  .grade-fullname {
+    animation: none;
+  }
+  .grade-logo {
+    transform: scale(1);
+    opacity: 1;
+    filter: none;
+  }
+  .grade-fullname {
+    opacity: 1;
+  }
+  .qp-card-in {
+    animation: none;
+  }
+}

@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: assessment-api
+    ports:
+      - "8000:8000"
+    environment:
+      # Application Settings
+      ENV: development
+      HOST: 0.0.0.0
+      PORT: 8000
+      BUCKET_NAME: ${BUCKET_NAME:-assessment-drafting-engine}
+      
+      # AWS Credentials (from host environment or .env file)
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-us-east-1}
+    
+    # Mount AWS credentials if available locally
+    volumes:
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+      - .:/app  # Mount current directory for live reload (optional)
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Optional: Add monitoring/logging services
+
+  # Uncomment to add log aggregation
+  # logging:
+  #   image: python:3.11-slim
+  #   container_name: assessment-logs
+  #   volumes:
+  #     - ./logs:/logs
+  #   ports:
+  #     - "9200:9200"
+  #   environment:
+  #     - discovery.type=single-node
+
+volumes:
+  logs:
+    driver: local
+
+networks:
+  default:
+    name: assessment-network

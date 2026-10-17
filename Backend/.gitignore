@@ -1,0 +1,14 @@
+# Secrets - never commit
+.env
+*.env
+!*.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build artifacts (regenerate with build_embeddings.py)
+diagram_search/Embeddings/*.npy
+diagram_search/Embeddings/*.json

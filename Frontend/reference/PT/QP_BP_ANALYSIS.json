@@ -1,0 +1,638 @@
+{
+  "analysis_metadata": {
+    "institution": "Podar International School",
+    "examination": "Periodic Test 1 (2024-25)",
+    "standard": "VII",
+    "subject": "Science",
+    "time_allowed": "1 hour",
+    "total_marks": 20,
+    "files_analyzed": 8,
+    "date_analyzed": "2024"
+  },
+  "qp_structure": {
+    "overview": {
+      "total_questions": 9,
+      "total_pages": 3,
+      "compulsory": true,
+      "overall_choice": false,
+      "sections": ["A", "B", "C", "D", "E"]
+    },
+    "sections": {
+      "section_a": {
+        "name": "Multiple Choice Questions (MCQ)",
+        "questions": "1 to 4",
+        "count": 4,
+        "question_type": "Objective Type (OT)",
+        "marks_per_question": 1,
+        "total_marks": 4,
+        "weightage_percent": 20,
+        "description": "Select and write the most appropriate option out of four options given",
+        "answer_length": "Single choice selection"
+      },
+      "section_b": {
+        "name": "Very Short Answer Type",
+        "questions": "5 to 6",
+        "count": 2,
+        "question_type": "Short Answer I (SA I)",
+        "marks_per_question": 2,
+        "total_marks": 4,
+        "weightage_percent": 20,
+        "description": "Very Short Answer type questions",
+        "answer_length": "30 to 50 words"
+      },
+      "section_c": {
+        "name": "Short Answer Type",
+        "questions": "7",
+        "count": 1,
+        "question_type": "Short Answer II (SA II)",
+        "marks_per_question": 3,
+        "total_marks": 3,
+        "weightage_percent": 15,
+        "description": "Short Answer type question with sub-parts",
+        "answer_length": "50 to 80 words"
+      },
+      "section_d": {
+        "name": "Long Answer Type",
+        "questions": "8",
+        "count": 1,
+        "question_type": "Long Answer (LA)",
+        "marks_per_question": 5,
+        "total_marks": 5,
+        "weightage_percent": 25,
+        "description": "Long Answer type question with multiple sub-parts",
+        "answer_length": "80 to 120 words"
+      },
+      "section_e": {
+        "name": "Source-Based / Case-Based Assessment",
+        "questions": "9",
+        "count": 1,
+        "question_type": "Case Based Question (CBQ)",
+        "marks_per_question": 4,
+        "total_marks": 4,
+        "weightage_percent": 20,
+        "description": "Source-based/case-based units of assessment with sub-parts",
+        "answer_length": "Variable based on sub-questions"
+      }
+    },
+    "marks_distribution": {
+      "total_marks": 20,
+      "by_section": {
+        "A": 4,
+        "B": 4,
+        "C": 3,
+        "D": 5,
+        "E": 4
+      },
+      "by_question_type": {
+        "MCQ (1 mark)": {
+          "count": 4,
+          "marks": 4
+        },
+        "VSA (2 marks)": {
+          "count": 2,
+          "marks": 4
+        },
+        "SA (3 marks)": {
+          "count": 1,
+          "marks": 3
+        },
+        "LA (5 marks)": {
+          "count": 1,
+          "marks": 5
+        },
+        "CBA (4 marks)": {
+          "count": 1,
+          "marks": 4
+        }
+      }
+    },
+    "question_types_detailed": [
+      {
+        "type": "Multiple Choice Questions (MCQ)",
+        "section": "A",
+        "description": "Questions 1-4: Standard MCQ with 4 options (a, b, c, d)",
+        "characteristics": [
+          "Objective assessment",
+          "Single correct answer",
+          "1 mark per question",
+          "Total 4 questions"
+        ],
+        "question_4_format": "Assertion-Reason format: Both A and R true/correct explanation, Both A and R true/not correct explanation, A true but R false, A false but R true"
+      },
+      {
+        "type": "Very Short Answer (VSA)",
+        "section": "B",
+        "description": "Questions 5-6: Two-part or descriptive questions",
+        "characteristics": [
+          "2 marks per question",
+          "Answer length: 30-50 words",
+          "Total 2 questions",
+          "May have sub-parts (a), (b), (c)"
+        ],
+        "examples": "Haustoria justification, Mistletoe vs Cuscuta comparison, Ingestion parts identification"
+      },
+      {
+        "type": "Short Answer (SA)",
+        "section": "C",
+        "description": "Question 7: Structured with labeled diagrams/images",
+        "characteristics": [
+          "3 marks",
+          "Answer length: 50-80 words",
+          "Usually 2-3 sub-parts",
+          "May include labeling diagrams"
+        ],
+        "examples": "Amoeba structure identification, Lichen formation, Plant observation experiment"
+      },
+      {
+        "type": "Long Answer (LA)",
+        "section": "D",
+        "description": "Question 8: Comprehensive conceptual questions",
+        "characteristics": [
+          "5 marks",
+          "Answer length: 80-120 words",
+          "Usually 3 sub-parts (a, b, c)",
+          "Requires detailed explanation"
+        ],
+        "examples": "Photosynthesis process, Detritivores and crop rotation, Amoeba ingestion process"
+      },
+      {
+        "type": "Case-Based / Source-Based (CBQ)",
+        "section": "E",
+        "description": "Question 9: Table/scenario with hints to identify unknowns",
+        "characteristics": [
+          "4 marks",
+          "Multiple sub-parts (a, b, c, etc.)",
+          "Requires reading comprehension",
+          "Application of concepts"
+        ],
+        "examples": "Tooth structure quiz (X=dentin, Y=enamel, Z=plaque), Stomach digestion (X=chyme, Y=HCl, Z=pepsin), Plant identification"
+      }
+    ]
+  },
+  "bp_structure": {
+    "overview": {
+      "total_pages": 1,
+      "format": "Two-part table: Chapter-wise breakdown and Question typology matrix"
+    },
+    "curriculum_coverage": {
+      "chapter_1": {
+        "name": "Nutrition in Plants",
+        "marks_range": "10-11",
+        "percentage": "50-55%",
+        "note": "A/C: 10 marks, B/D: 11 marks"
+      },
+      "chapter_2": {
+        "name": "Nutrition in Animals",
+        "marks_range": "9-10",
+        "percentage": "45-50%",
+        "note": "A/C: 10 marks, B/D: 9 marks"
+      },
+      "total_marks": 20
+    },
+    "question_typology_matrix": {
+      "description": "Maps question types across 3 learning domains (Rows) and 5 question formats (Columns)",
+      "rows": [
+        {
+          "sr_no": 1,
+          "domain": "R/U",
+          "domain_full": "Remembering/Understanding",
+          "marks_breakdown": {
+            "objective": "1 question × 1 mark",
+            "very_short_answer": "1 question × 2 marks",
+            "short_answer": "1 question × 3 marks",
+            "long_answer": "0",
+            "case_based": "0",
+            "total_marks": 8,
+            "weightage": "40%"
+          },
+          "distribution": [1, 1, 1, 0, 0]
+        },
+        {
+          "sr_no": 2,
+          "domain": "Ap",
+          "domain_full": "Application",
+          "marks_breakdown": {
+            "objective": "1 question × 1 mark",
+            "very_short_answer": "0",
+            "short_answer": "1 question × 3 marks",
+            "long_answer": "1 question × 5 marks",
+            "case_based": "0",
+            "total_marks": 8,
+            "weightage": "40%"
+          },
+          "distribution": [1, 0, 1, 1, 0]
+        },
+        {
+          "sr_no": 3,
+          "domain": "An/E",
+          "domain_full": "Analysis/Evaluation",
+          "marks_breakdown": {
+            "objective": "2 questions × 1 mark",
+            "very_short_answer": "0",
+            "short_answer": "1 question × 3 marks",
+            "long_answer": "0",
+            "case_based": "0",
+            "total_marks": 4,
+            "weightage": "20%"
+          },
+          "distribution": [2, 0, 0, 0, 0]
+        }
+      ],
+      "columns": [
+        {
+          "format": "Objective Type (OT)",
+          "marks_per_question": 1,
+          "total_questions": 4,
+          "total_marks": 4
+        },
+        {
+          "format": "Very Short Answer (SA I)",
+          "marks_per_question": 2,
+          "total_questions": 2,
+          "total_marks": 4
+        },
+        {
+          "format": "Short Answer (SA II)",
+          "marks_per_question": 3,
+          "total_questions": 1,
+          "total_marks": 3
+        },
+        {
+          "format": "Long Answer (LA)",
+          "marks_per_question": 5,
+          "total_questions": 1,
+          "total_marks": 5
+        },
+        {
+          "format": "Source Based (CBQ)",
+          "marks_per_question": 4,
+          "total_questions": 1,
+          "total_marks": 4
+        }
+      ],
+      "totals": {
+        "total_questions": 9,
+        "total_marks": 20,
+        "total_weightage": "100%"
+      }
+    },
+    "learning_domains_explanation": {
+      "remembering_understanding": {
+        "code": "R/U",
+        "percentage": 40,
+        "description": "Testing recall of facts and concepts, basic comprehension",
+        "question_types": "Mostly MCQs and descriptive questions requiring direct recall"
+      },
+      "application": {
+        "code": "Ap",
+        "percentage": 40,
+        "description": "Testing ability to apply concepts to new situations",
+        "question_types": "Mix of MCQ, short answer, and long answer requiring problem-solving"
+      },
+      "analysis_evaluation": {
+        "code": "An/E",
+        "percentage": 20,
+        "description": "Testing higher-order thinking: analysis, evaluation, judgment",
+        "question_types": "Primarily MCQs with assertion-reason format and analytical short answers"
+      }
+    }
+  },
+  "qp_bp_variations": {
+    "summary": "4 different question papers (A, B, C, D) with corresponding blueprints",
+    "variations": [
+      {
+        "paper": "A & C",
+        "chapter_1_marks": 10,
+        "chapter_2_marks": 10,
+        "content_focus": "Equal emphasis on both chapters"
+      },
+      {
+        "paper": "B & D",
+        "chapter_1_marks": 11,
+        "chapter_2_marks": 9,
+        "content_focus": "Slightly more emphasis on Nutrition in Plants"
+      }
+    ],
+    "common_elements": "All 4 papers follow identical section structure (A-E), question types, and learning domain distribution",
+    "variations_in_content": "Different concepts within same typology: different plants, organisms, experiments, and scenarios"
+  },
+  "canvas_2_recommended_layout": {
+    "overview": "Canvas 2 structure to accommodate the QP/BP assessment framework",
+    "master_layout_strategy": "Hierarchical organization with linked question types, answer rubrics, and adaptive assessment flow",
+    "top_level_organization": {
+      "course_structure": {
+        "assessment_title": "Periodic Test 1 - Nutrition (Plants & Animals)",
+        "assessment_code": "CB/VII/2425",
+        "standard": "VII",
+        "subject": "Science",
+        "duration_minutes": 60,
+        "total_marks": 20
+      },
+      "linked_chapters": [
+        {
+          "chapter_id": 1,
+          "chapter_name": "Nutrition in Plants",
+          "marks_allocation": "10-11"
+        },
+        {
+          "chapter_id": 2,
+          "chapter_name": "Nutrition in Animals",
+          "marks_allocation": "9-10"
+        }
+      ]
+    },
+    "section_templates": {
+      "section_a_mcq": {
+        "section_code": "A",
+        "name": "Multiple Choice Questions",
+        "question_range": "1-4",
+        "count": 4,
+        "marks_per_question": 1,
+        "total_marks": 4,
+        "question_template": {
+          "question_stem": "Main question with options",
+          "options": [
+            {"label": "(a)", "text": "First option"},
+            {"label": "(b)", "text": "Second option"},
+            {"label": "(c)", "text": "Third option"},
+            {"label": "(d)", "text": "Fourth option"}
+          ],
+          "correct_answer": "Single selection",
+          "special_format_q4": "Assertion-Reason with meta-options"
+        },
+        "assessment_flow": [
+          "Display question with image/diagram if needed",
+          "Capture single selection",
+          "Immediate feedback available",
+          "Auto-scoring: 1 mark or 0"
+        ]
+      },
+      "section_b_vsa": {
+        "section_code": "B",
+        "name": "Very Short Answer",
+        "question_range": "5-6",
+        "count": 2,
+        "marks_per_question": 2,
+        "total_marks": 4,
+        "structure": "2-part or multi-sub-part questions",
+        "answer_requirements": {
+          "word_range": "30-50 words",
+          "format": "Text response or multiple text boxes for sub-parts"
+        },
+        "question_template": {
+          "main_question": "Question with context",
+          "sub_parts": [
+            {"label": "(a)", "text": "First sub-question"},
+            {"label": "(b)", "text": "Second sub-question"}
+          ]
+        },
+        "assessment_flow": [
+          "Display full question with sub-parts",
+          "Provide separate text areas for each sub-part",
+          "Display word count indicator (30-50 words)",
+          "Manual grading interface with rubric"
+        ],
+        "rubric_template": {
+          "marks": 2,
+          "full_marks_criteria": "Complete, accurate, concise answer within word limit",
+          "partial_marks_criteria": "Partially correct or incomplete answer",
+          "marks_0_criteria": "Incorrect or no answer"
+        }
+      },
+      "section_c_sa": {
+        "section_code": "C",
+        "name": "Short Answer",
+        "question_range": "7",
+        "count": 1,
+        "marks": 3,
+        "structure": "2-3 sub-parts with diagram/image",
+        "answer_requirements": {
+          "word_range": "50-80 words",
+          "format": "Text response with possible labeling"
+        },
+        "question_template": {
+          "image_area": "Display diagram/photograph with labels",
+          "label_identification": "Require students to identify labeled parts",
+          "sub_questions": [
+            {"label": "(a)", "text": "Question about specific labeled part"},
+            {"label": "(b)", "text": "Question about function"},
+            {"label": "(c)", "text": "Question about structure/process"}
+          ]
+        },
+        "assessment_flow": [
+          "Display image with clear labels",
+          "Provide text area for identifying labels",
+          "Additional text areas for explanations",
+          "Word count indicator (50-80 words)",
+          "Manual grading with 3-mark rubric"
+        ],
+        "rubric_template": {
+          "marks": 3,
+          "marks_3_criteria": "All parts correct, well-explained, within word limit",
+          "marks_2_criteria": "Most parts correct, some explanation lacking",
+          "marks_1_criteria": "Partially correct, incomplete explanation",
+          "marks_0_criteria": "Incorrect or no response"
+        }
+      },
+      "section_d_la": {
+        "section_code": "D",
+        "name": "Long Answer",
+        "question_range": "8",
+        "count": 1,
+        "marks": 5,
+        "structure": "3 sub-parts requiring detailed explanation",
+        "answer_requirements": {
+          "word_range": "80-120 words",
+          "format": "Extended text response"
+        },
+        "question_template": {
+          "stem": "Opening statement/scenario",
+          "sub_questions": [
+            {"label": "(a)", "text": "First part - Concept identification"},
+            {"label": "(b)", "text": "Second part - Process/Mechanism"},
+            {"label": "(c)", "text": "Third part - Classification/Application"}
+          ]
+        },
+        "assessment_flow": [
+          "Display question stem and all sub-parts",
+          "Provide large text area for comprehensive response",
+          "Word count indicator (80-120 words)",
+          "Optional: Outline/structure guide",
+          "Manual grading with 5-mark rubric"
+        ],
+        "rubric_template": {
+          "marks": 5,
+          "marks_5_criteria": "Comprehensive, accurate, well-organized, all parts covered",
+          "marks_4_criteria": "Most parts correct, minor gaps in explanation",
+          "marks_3_criteria": "Basic understanding shown, some parts incomplete",
+          "marks_2_criteria": "Partial understanding, significant gaps",
+          "marks_1_criteria": "Minimal understanding shown",
+          "marks_0_criteria": "No response or completely incorrect"
+        }
+      },
+      "section_e_cba": {
+        "section_code": "E",
+        "name": "Case-Based Assessment",
+        "question_range": "9",
+        "count": 1,
+        "marks": 4,
+        "structure": "Table/case scenario with hints followed by 2-3 sub-questions",
+        "answer_requirements": {
+          "word_range": "Variable",
+          "format": "Mix of identification, explanation, application"
+        },
+        "question_template": {
+          "scenario": "Case description with table of hints",
+          "hint_table": [
+            {"serial": "(i)", "hint": "First clue"},
+            {"serial": "(ii)", "hint": "Second clue"},
+            {"serial": "(iii)", "hint": "Third clue"},
+            {"serial": "(iv)", "hint": "Fourth clue"}
+          ],
+          "sub_questions": [
+            {"label": "(a)", "text": "Identify X and Y"},
+            {"label": "(b)", "text": "Function/Characterization of one element"},
+            {"label": "(c)", "text": "Multiple functions or applications"}
+          ]
+        },
+        "assessment_flow": [
+          "Display full case/table scenario",
+          "Require reading comprehension",
+          "Provide separate response areas for each sub-question",
+          "Allow partial text responses",
+          "Manual grading with 4-mark rubric"
+        ],
+        "rubric_template": {
+          "marks": 4,
+          "marks_4_criteria": "All identifications correct, functions well-explained",
+          "marks_3_criteria": "Most identifications correct, explanations mostly complete",
+          "marks_2_criteria": "Some identifications correct, partial explanations",
+          "marks_1_criteria": "Few correct identifications, minimal explanation",
+          "marks_0_criteria": "Incorrect or no response"
+        }
+      }
+    },
+    "integrated_features": {
+      "feature_1_auto_scoring": {
+        "applicable_to": "Section A (MCQ) only",
+        "mechanism": "Automatic comparison with answer key",
+        "scoring": "1 mark for correct, 0 for incorrect"
+      },
+      "feature_2_manual_grading": {
+        "applicable_to": "Sections B, C, D, E",
+        "mechanism": "Teacher grading interface with rubric templates",
+        "rubric_levels": "Full marks, partial marks, zero marks with predefined criteria"
+      },
+      "feature_3_progress_tracking": {
+        "elements": [
+          "Question-wise response tracking",
+          "Section-wise cumulative marks",
+          "Time spent per question/section",
+          "Answer submission status"
+        ]
+      },
+      "feature_4_adaptive_hints": {
+        "applicable_to": "Sections B, C, D (optional)",
+        "mechanism": "Contextual hints based on question type",
+        "examples": "Word count guidance, structure suggestions, key concept reminders"
+      },
+      "feature_5_answer_key_reference": {
+        "applicable_to": "All sections",
+        "mechanism": "Teacher-visible model answers with marking scheme",
+        "integration": "Compare student responses with model answers during grading"
+      }
+    },
+    "navigation_and_workflow": {
+      "entry_point": "Assessment homepage with instructions",
+      "instruction_display": {
+        "general_instructions": "Display all 8 instruction rules",
+        "section_instructions": "Display section-specific instructions on each section page",
+        "time_tracking": "Real-time exam timer and submission status"
+      },
+      "section_navigation": {
+        "linear_flow": "Students complete sections in order (A → B → C → D → E)",
+        "save_draft": "Auto-save and manual save options",
+        "review_before_submit": "Review all responses before final submission"
+      },
+      "marking_workflow": {
+        "stage_1": "Auto-score section A",
+        "stage_2": "Queue sections B-E for manual grading",
+        "stage_3": "Teacher grading with rubric templates",
+        "stage_4": "Final marks calculation and result compilation"
+      }
+    },
+    "data_model_structure": {
+      "assessment_entity": {
+        "id": "PT1-CB-VII-Science",
+        "title": "Periodic Test 1 - Science VII",
+        "sections": [
+          {
+            "section_id": "A",
+            "questions": [
+              {
+                "q_id": 1,
+                "type": "MCQ",
+                "chapter": 1,
+                "domain": "R/U",
+                "marks": 1,
+                "content_code": "structure_adaptation_plant_nutrition"
+              },
+              {
+                "q_id": 4,
+                "type": "MCQ_AR",
+                "chapter": 2,
+                "domain": "An/E",
+                "marks": 1,
+                "content_code": "animal_nutrition_detritivores"
+              }
+            ]
+          },
+          {
+            "section_id": "B",
+            "questions": [
+              {
+                "q_id": 5,
+                "type": "VSA",
+                "chapter": 2,
+                "domain": "R/U",
+                "marks": 2,
+                "sub_parts": 2,
+                "content_code": "digestion_absorption_small_intestine"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "key_insights": {
+    "assessment_design": [
+      "Balanced distribution: 40% R/U, 40% Application, 20% Analysis/Evaluation",
+      "Progressive difficulty: Sections A→B (factual) → C→D (conceptual) → E (analytical)",
+      "Equal chapter emphasis: 50-50 or 55-45 split between Nutrition in Plants and Animals",
+      "Question types test multiple competencies: recall, application, analysis, synthesis"
+    ],
+    "question_paper_characteristics": [
+      "All 4 papers (A-D) follow identical structure but test different content areas",
+      "4 different MCQ sets reduce cheating and enable parallel testing",
+      "Each paper covers same concepts at different difficulty levels within same total marks",
+      "Assertion-Reason format in Q4 tests deeper understanding beyond simple recall"
+    ],
+    "blueprint_implications": [
+      "40% of marks target remembering/understanding level",
+      "40% of marks require application of concepts",
+      "20% of marks demand analysis and critical thinking",
+      "Clear distribution helps maintain question paper quality and balance"
+    ]
+  },
+  "implementation_notes_for_canvas_2": {
+    "priority_1": "Build auto-scoring engine for Section A (MCQ)",
+    "priority_2": "Create rubric template system for Sections B-E manual grading",
+    "priority_3": "Implement real-time exam timer and save functionality",
+    "priority_4": "Design answer key management for teacher comparison",
+    "priority_5": "Build progress tracking and analytics dashboard",
+    "data_validation": "Enforce word count limits (VSA: 30-50, SA: 50-80, LA: 80-120)",
+    "accessibility": "Ensure proper contrast for diagrams, support for text-to-speech",
+    "scalability": "System must support 4 parallel question papers and 100+ concurrent students"
+  }
+}

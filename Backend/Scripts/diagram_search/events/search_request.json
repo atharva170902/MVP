@@ -1,0 +1,5 @@
+{
+  "httpMethod": "POST",
+  "headers": { "Content-Type": "application/json" },
+  "body": "{\"query\": \"a diagram about rain\", \"top_k\": 10, \"filters\": {\"chapter_id\": \"ch07\", \"diagram_type\": \"diagram\"}}"
+}

@@ -1,0 +1,134 @@
+================================================================================
+MARKS ALLOCATION - VISUAL LAYOUT
+================================================================================
+
+STEP 2: CHAPTER & MARKS ALLOCATION
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Craft a Paper > Step 2: Chapter & Marks Allocation                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ Select Chapters                                                            │
+│                                                                              │
+│ ☑ 1. Nutrition in Plants                                    [Selected]     │
+│ ☑ 2. Acids Bases and Salts                                 [Selected]     │
+│ ☐ 3. Heat and Its Transfer                                                │
+│ ☐ 4. Respiration in Organisms                                             │
+│ ☐ 5. Physical and Chemical Change                                         │
+│ ☐ 6. Transportation in Animals and Plants                                 │
+│ ☐ 7. Reproduction in Plants                                               │
+│ ☐ 8. Time and Motion                                                      │
+│ ☐ 9. Light                                                                │
+│ ☐ 10. Electric Current and Its Effect                                     │
+│ ☐ 11. Forests Our Lifeline                                                │
+│ ☐ 12. Wastewater Story                                                    │
+│ ☐ 13. Sound                                                               │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ Marks Allocation                                                           │
+│ Assign marks to each selected chapter. Total must equal 20 marks.         │
+│                                                                              │
+│ ┌──────────────────────────────────────────────────────┐                  │
+│ │ Nutrition in Plants                    [  5  ] marks │                  │
+│ │ Acids Bases and Salts                  [ 15  ] marks │                  │
+│ └──────────────────────────────────────────────────────┘                  │
+│                                                                              │
+│ ┌──────────────────────────────────────────────────────┐                  │
+│ │ Total Marks Allocated:                 20 / 20      │  ✅ GREEN        │
+│ │ ✅ All marks allocated correctly!                    │                  │
+│ └──────────────────────────────────────────────────────┘                  │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ [Back] [Home] [Continue to Step 3 ✅ ENABLED]                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+
+DIFFERENT SCENARIOS:
+
+Scenario 1: NOT ENOUGH MARKS (15 / 20)
+┌──────────────────────────────────────────┐
+│ Total Marks Allocated: 15 / 20           │  ⚠️ YELLOW
+│ ⚠️ 5 marks remaining.                    │
+│ Please allocate all marks.               │
+└──────────────────────────────────────────┘
+Button: DISABLED (gray)
+
+Scenario 2: TOO MANY MARKS (22 / 20)
+┌──────────────────────────────────────────┐
+│ Total Marks Allocated: 22 / 20           │  ❌ RED
+│ ❌ 2 marks over the limit.               │
+│ Please reduce.                           │
+└──────────────────────────────────────────┘
+Button: DISABLED (gray)
+
+Scenario 3: EXACTLY CORRECT (20 / 20)
+┌──────────────────────────────────────────┐
+│ Total Marks Allocated: 20 / 20           │  ✅ GREEN
+│ ✅ All marks allocated correctly!        │
+└──────────────────────────────────────────┘
+Button: ENABLED (blue)
+
+================================================================================
+
+CHAPTER SELECTION STATES:
+
+NOT SELECTED:
+┌────────────────────────┐
+│ ☐ 1. Chapter Name      │
+└────────────────────────┘
+(Gray, light background)
+
+SELECTED:
+┌────────────────────────────────────────┐
+│ ☑ 1. Chapter Name      [Selected]      │
+└────────────────────────────────────────┘
+(Blue border, blue highlight, badge shows "Selected")
+
+================================================================================
+
+MARKS INPUT:
+
+User can enter:
+- Any number from 0 to total marks (e.g., 0-20)
+- Input shows in a box with chapter name on left
+
+Example:
+┌─────────────────────────────────────┐
+│ Nutrition in Plants  [5] marks      │
+└─────────────────────────────────────┘
+(Click the [5] to edit)
+
+================================================================================
+
+BUTTON STATES:
+
+DISABLED (while marks < or > total):
+┌────────────────────────────┐
+│ Continue to Step 3 ❌       │
+│ (Gray background)          │
+│ Hover: "Please allocate    │
+│ exactly 20 marks"          │
+└────────────────────────────┘
+
+ENABLED (when marks = total):
+┌────────────────────────────┐
+│ Continue to Step 3 ✅       │
+│ (Blue background, clickable)
+└────────────────────────────┘
+
+================================================================================
+
+SUMMARY:
+
+1. User selects chapters (click checkbox)
+2. System shows marks input fields
+3. User enters marks for each chapter
+4. System calculates total in real-time
+5. Shows color status (red/yellow/green)
+6. Shows helpful message
+7. Button enables only when total = exam total marks
+8. User clicks Continue to Step 3
+
+================================================================================
