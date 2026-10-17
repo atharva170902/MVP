@@ -156,32 +156,6 @@ function QuestionSlotCard({
   );
 }
 
-function TokenUsage({ tokenUsage }) {
-  if (!tokenUsage) return null;
-  const byModel = tokenUsage.by_model || {};
-  const modelKeys = Object.keys(byModel);
-  return (
-    <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs text-gray-700">
-      <p className="font-semibold text-gray-900">
-        Tokens used: {Number(tokenUsage.total_tokens || 0).toLocaleString()}
-      </p>
-      <p className="text-gray-500">
-        input {Number(tokenUsage.input_tokens || 0).toLocaleString()} - output{' '}
-        {Number(tokenUsage.output_tokens || 0).toLocaleString()}
-      </p>
-      {modelKeys.length > 0 && (
-        <ul className="mt-2 space-y-0.5">
-          {modelKeys.map((model) => (
-            <li key={model} className="text-gray-600">
-              {model}: {Number(byModel[model]?.total_tokens || 0).toLocaleString()} tokens
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 function GeneratedQuestion({ question, index }) {
   const isMcq = Array.isArray(question.options) && question.options.length > 0;
   return (
@@ -239,7 +213,62 @@ function GeneratedQuestion({ question, index }) {
   );
 }
 
+// Compact, highlighted token summary shown INLINE in the panel header (next to
+// "AI Assistance"). Returns null when there is nothing to show yet.
+// Format a USD amount. Costs here are fractions of a cent, so show 4 decimals
+// (e.g. $0.0229) but fall back to "< $0.0001" for tiny non-zero amounts.
+function formatUSD(value) {
+  const n = Number(value || 0);
+  if (n > 0 && n < 0.0001) return '< $0.0001';
+  return `$${n.toFixed(4)}`;
+}
+
+// Highlighted token + cost summary shown in the panel header (next to the
+// "AI Assistance" title). Token pill on top; USD cost (total, then Sonnet, then
+// Qwen) underneath when the backend supplied a cost_estimate. Returns null when
+// there is nothing to show yet.
+function TokenHeaderBadge({ tokenUsage, costEstimate }) {
+  const total = Number(tokenUsage?.total_tokens || 0);
+  if (!tokenUsage || total === 0) return null;
+
+  const hasCost = costEstimate && typeof costEstimate.total === 'number';
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <span
+        title={`input ${Number(tokenUsage.input_tokens || 0).toLocaleString()} / output ${Number(
+          tokenUsage.output_tokens || 0
+        ).toLocaleString()}`}
+        className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 whitespace-nowrap"
+      >
+        <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+        {total.toLocaleString()} tokens
+      </span>
+
+      {hasCost && (
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-right">
+          <div className="text-xs font-bold text-emerald-700 whitespace-nowrap">
+            {formatUSD(costEstimate.total)} total
+          </div>
+          <div className="mt-0.5 space-y-0.5 text-[11px] text-emerald-600 whitespace-nowrap">
+            <div>Sonnet: {formatUSD(costEstimate['sonnet-4.5'])}</div>
+            <div>Qwen: {formatUSD(costEstimate['qwen-vl'])}</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GenerationResults({ snapshot, error }) {
+  // Which section (A..E) is currently being viewed in the filter, and which
+  // slot rows are expanded to reveal their questions.
+  const [activeSection, setActiveSection] = useState('A');
+  const [openSlots, setOpenSlots] = useState({});
+
+  const toggleSlot = (slotKey) =>
+    setOpenSlots((prev) => ({ ...prev, [slotKey]: !prev[slotKey] }));
+
   if (error) {
     return (
       <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -268,6 +297,10 @@ function GenerationResults({ snapshot, error }) {
   const errors = snapshot.errors || {};
   const warnings = snapshot.warnings || {};
 
+  // Slots that belong to the currently-selected section, in q-order.
+  const activeSlots = SECTION_SLOTS[activeSection] || [];
+  const activeQuestions = questions[activeSection] || {};
+
   return (
     <div className="space-y-4">
       {/* Overall banner */}
@@ -289,76 +322,93 @@ function GenerationResults({ snapshot, error }) {
         </div>
       )}
 
-      {/* Per-section progress */}
+      {/* Section filter: click a section to view only its slots. The active
+          chip is highlighted; the count shows done/total per section. */}
       <div className="flex flex-wrap gap-2">
         {SECTION_ORDER.map((section) => {
           const p = progress[section];
-          if (!p) return null;
+          const done = p?.done ?? 0;
+          const total = p?.total ?? (SECTION_SLOTS[section] || []).length;
+          const isActive = section === activeSection;
           return (
-            <span
+            <button
               key={section}
-              className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
+              type="button"
+              onClick={() => setActiveSection(section)}
+              className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
+                isActive
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
             >
-              {section}: {p.done}/{p.total}
-            </span>
+              Section {section}
+              <span className={`ml-1 ${isActive ? 'text-blue-100' : 'text-gray-400'}`}>
+                {done}/{total}
+              </span>
+            </button>
           );
         })}
       </div>
 
-      {/* Questions grouped by section -> slot */}
-      {SECTION_ORDER.map((section) => {
-        const slots = questions[section];
-        if (!slots || Object.keys(slots).length === 0) return null;
-        const slotKeys = Object.keys(slots).sort();
-        return (
-          <div key={section} className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-900">Section {section}</h3>
-            {slotKeys.map((slotKey) => (
-              <div key={slotKey} className="space-y-2">
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                  {slotKey}
-                </p>
-                {errors[slotKey] && (
-                  <p className="rounded bg-red-50 px-2 py-1 text-xs text-red-600">
-                    {errors[slotKey]}
-                  </p>
-                )}
-                {Array.isArray(warnings[slotKey]) &&
-                  warnings[slotKey].map((w, i) => (
-                    <p
-                      key={i}
-                      className="rounded bg-amber-50 px-2 py-1 text-xs text-amber-700"
-                    >
+      {/* Active section: one collapsible row per slot (Q1, Q2, ...). Clicking a
+          row expands its generated questions. */}
+      <div className="space-y-2">
+        <h3 className="text-sm font-semibold text-gray-900">Section {activeSection}</h3>
+        {activeSlots.map((slotKey) => {
+          const slotQuestions = activeQuestions[slotKey] || [];
+          const slotError = errors[slotKey];
+          const slotWarnings = Array.isArray(warnings[slotKey]) ? warnings[slotKey] : [];
+          const count = slotQuestions.length;
+          const isOpen = !!openSlots[slotKey];
+          const qLabel = `Q${SLOT_NUMBER[slotKey]}`;
+          return (
+            <div key={slotKey} className="overflow-hidden rounded-lg border border-gray-200">
+              <button
+                type="button"
+                onClick={() => toggleSlot(slotKey)}
+                className="flex w-full items-center justify-between gap-2 bg-gray-50 px-3 py-2 text-left transition-colors hover:bg-gray-100"
+              >
+                <span className="text-sm font-semibold text-gray-900">{qLabel}</span>
+                <span className="flex items-center gap-2">
+                  {slotError ? (
+                    <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                      error
+                    </span>
+                  ) : (
+                    <span className="text-xs font-medium text-gray-500">
+                      {count} {count === 1 ? 'question' : 'questions'}
+                    </span>
+                  )}
+                  <span className={`text-gray-400 transition-transform ${isOpen ? 'rotate-90' : ''}`}>
+                    &#8250;
+                  </span>
+                </span>
+              </button>
+
+              {isOpen && (
+                <div className="space-y-2 border-t border-gray-200 bg-white p-3">
+                  {slotError && (
+                    <p className="rounded bg-red-50 px-2 py-1 text-xs text-red-600">{slotError}</p>
+                  )}
+                  {slotWarnings.map((w, i) => (
+                    <p key={i} className="rounded bg-amber-50 px-2 py-1 text-xs text-amber-700">
                       {w}
                     </p>
                   ))}
-                {(slots[slotKey] || []).map((q, i) => (
-                  <GeneratedQuestion key={i} question={q} index={i} />
-                ))}
-              </div>
-            ))}
-          </div>
-        );
-      })}
-
-      {/* Per-slot errors for slots that produced no questions */}
-      {Object.keys(errors)
-        .filter((slotKey) => {
-          // errors already shown inline above belong to sections that have questions;
-          // surface any remaining slot errors here too.
-          return !SECTION_ORDER.some((section) => questions[section]?.[slotKey]);
-        })
-        .map((slotKey) => (
-          <p
-            key={slotKey}
-            className="rounded bg-red-50 px-2 py-1 text-xs text-red-600"
-          >
-            {slotKey}: {errors[slotKey]}
-          </p>
-        ))}
-
-      {/* Tokens used (running then final) */}
-      <TokenUsage tokenUsage={snapshot.token_usage} />
+                  {!slotError && count === 0 && (
+                    <p className="px-1 py-2 text-center text-xs text-gray-400">
+                      No questions yet.
+                    </p>
+                  )}
+                  {slotQuestions.map((q, i) => (
+                    <GeneratedQuestion key={i} question={q} index={i} />
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -1581,12 +1631,21 @@ export default function CraftAPaper({ user }) {
             {/* Right Panel: Canvas 2 - AI Assistance (generation progress, unchanged meaning) */}
             <div className="col-span-4 bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  AI Assistance
-                </h2>
-                <p className="text-xs text-gray-500 mt-1">
-                  AI-generated questions per section
-                </p>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      AI Assistance
+                    </h2>
+                    <p className="text-xs text-gray-500 mt-1">
+                      AI-generated questions per section
+                    </p>
+                  </div>
+                  {/* Token + cost headline, highlighted, next to the title. */}
+                  <TokenHeaderBadge
+                    tokenUsage={genStatus?.token_usage}
+                    costEstimate={genStatus?.cost_estimate}
+                  />
+                </div>
               </div>
               <div className="flex-1 min-h-0 bg-white overflow-y-auto p-4">
                 <GenerationResults snapshot={genStatus} error={genError} />

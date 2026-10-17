@@ -10,6 +10,7 @@ Each ``Job`` accumulates per-slot results, titan embedding usage, and exposes a
 ``snapshot()`` that the status endpoint returns verbatim.
 """
 
+import os
 import threading
 import uuid
 from dataclasses import dataclass, field
@@ -23,6 +24,42 @@ _SLOT_SECTION = {
     "q7": "C", "q8": "D", "q9": "E",
 }
 _SECTION_ORDER = ["A", "B", "C", "D", "E"]
+
+# COST_RATE_* env-var names per model key (mirrors generation_service._COST_RATE_ENV
+# so the LIVE snapshot cost matches the final persisted paper's cost).
+_COST_RATE_ENV = {
+    "sonnet-4.5": ("COST_RATE_SONNET_INPUT_PER_1K", "COST_RATE_SONNET_OUTPUT_PER_1K"),
+    "qwen-vl": ("COST_RATE_QWEN_INPUT_PER_1K", "COST_RATE_QWEN_OUTPUT_PER_1K"),
+    "titan-embed": ("COST_RATE_TITAN_INPUT_PER_1K", "COST_RATE_TITAN_OUTPUT_PER_1K"),
+}
+
+
+def _optional_cost_estimate(by_model: Dict[str, Dict[str, int]]) -> Optional[Dict[str, Any]]:
+    """Return an OPTIONAL per-model + total dollar estimate, ONLY when the relevant
+    COST_RATE_* env rates are set (never hardcodes a price). Returns None when no
+    rate is configured. Mirrors generation_service._optional_cost_estimate."""
+    estimate: Dict[str, Any] = {}
+    total = 0.0
+    any_rate = False
+    for model, usage in by_model.items():
+        env_in, env_out = _COST_RATE_ENV.get(model, (None, None))
+        rate_in = os.environ.get(env_in) if env_in else None
+        rate_out = os.environ.get(env_out) if env_out else None
+        if rate_in is None and rate_out is None:
+            continue
+        any_rate = True
+        try:
+            cost = (int(usage.get("input_tokens", 0)) / 1000.0) * float(rate_in or 0) + \
+                   (int(usage.get("output_tokens", 0)) / 1000.0) * float(rate_out or 0)
+        except (TypeError, ValueError):
+            continue
+        estimate[model] = round(cost, 6)
+        total += cost
+    if not any_rate:
+        return None
+    estimate["total"] = round(total, 6)
+    estimate["currency"] = "USD"
+    return estimate
 
 
 def _now_iso() -> str:
@@ -133,6 +170,10 @@ class Job:
             warnings: Dict[str, list] = {}
 
             token_total = _zero_usage()
+            # Per-model token aggregation (keyed sonnet-4.5 / qwen-vl / titan-embed),
+            # derived from each question's generation_model so the live cost matches
+            # the final paper's by_model breakdown.
+            by_model: Dict[str, Dict[str, int]] = {}
             for slot, result in self.slots.items():
                 section = result.section
                 if result.error:
@@ -141,10 +182,18 @@ class Job:
                     progress[section]["done"] += 1
                     questions[section][slot] = result.questions
                     token_total = _add_usage(token_total, result.token_usage)
+                    for q in result.questions or []:
+                        model = (q.get("generation_model") or "sonnet-4.5") if isinstance(q, dict) else "sonnet-4.5"
+                        q_usage = (q.get("token_usage") if isinstance(q, dict) else None) or _zero_usage()
+                        by_model[model] = _add_usage(by_model.get(model, _zero_usage()), q_usage)
                 if result.warnings:
                     warnings[slot] = result.warnings
 
+            # Fold titan embedding usage into both the flat total and by_model.
             token_total = _add_usage(token_total, self.titan_usage)
+            by_model["titan-embed"] = _add_usage(by_model.get("titan-embed", _zero_usage()), dict(self.titan_usage))
+
+            cost_estimate = _optional_cost_estimate(by_model)
 
             return {
                 "jobId": self.job_id,
@@ -154,6 +203,8 @@ class Job:
                 "questions": questions,
                 "token_usage": token_total,
                 "titan_usage": dict(self.titan_usage),
+                "by_model": by_model,
+                "cost_estimate": cost_estimate,
                 "errors": errors,
                 "warnings": warnings,
                 "error": self.error,
