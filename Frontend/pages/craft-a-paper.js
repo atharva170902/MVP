@@ -55,6 +55,7 @@ const SECTION_SLOTS = { A: ['q1', 'q2', 'q3', 'q4'], B: ['q5', 'q6'], C: ['q7'],
 const SLOT_SECTION = { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'B', q6: 'B', q7: 'C', q8: 'D', q9: 'E' };
 const SLOT_MARKS = { q1: 1, q2: 1, q3: 1, q4: 1, q5: 2, q6: 2, q7: 3, q8: 5, q9: 4 };
 const SLOT_NUMBER = { q1: 1, q2: 2, q3: 3, q4: 4, q5: 5, q6: 6, q7: 7, q8: 8, q9: 9 };
+const SLOT_ORDER = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9'];
 
 // Per-section exam-paper copy (header title + sub-line), reused in palette and canvas.
 const SECTION_META = {
@@ -156,10 +157,14 @@ function QuestionSlotCard({
   );
 }
 
-function GeneratedQuestion({ question, index }) {
+function GeneratedQuestion({ question, index, slotKey, onChoose, isChosen }) {
   const isMcq = Array.isArray(question.options) && question.options.length > 0;
   return (
-    <div className="rounded-md border border-gray-200 bg-white p-3">
+    <div
+      className={`rounded-md border p-3 transition-colors ${
+        isChosen ? 'border-blue-500 bg-blue-50/60 ring-1 ring-blue-300' : 'border-gray-200 bg-white'
+      }`}
+    >
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium text-gray-900">
           {index + 1}. {question.question_text}
@@ -208,6 +213,21 @@ function GeneratedQuestion({ question, index }) {
             </div>
           )}
         </div>
+      )}
+
+      {/* Click-to-add: place THIS question into its slot of the final paper. */}
+      {onChoose && (
+        <button
+          type="button"
+          onClick={() => onChoose(slotKey, question)}
+          className={`mt-3 w-full rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+            isChosen
+              ? 'bg-blue-600 text-white'
+              : 'border border-blue-300 bg-white text-blue-700 hover:bg-blue-50'
+          }`}
+        >
+          {isChosen ? 'Added to paper' : 'Add to paper'}
+        </button>
       )}
     </div>
   );
@@ -260,7 +280,7 @@ function TokenHeaderBadge({ tokenUsage, costEstimate }) {
   );
 }
 
-function GenerationResults({ snapshot, error }) {
+function GenerationResults({ snapshot, error, chosenQuestions, onChoose }) {
   // Which section (A..E) is currently being viewed in the filter, and which
   // slot rows are expanded to reveal their questions.
   const [activeSection, setActiveSection] = useState('A');
@@ -401,7 +421,17 @@ function GenerationResults({ snapshot, error }) {
                     </p>
                   )}
                   {slotQuestions.map((q, i) => (
-                    <GeneratedQuestion key={i} question={q} index={i} />
+                    <GeneratedQuestion
+                      key={i}
+                      question={q}
+                      index={i}
+                      slotKey={slotKey}
+                      onChoose={onChoose}
+                      isChosen={
+                        !!chosenQuestions &&
+                        chosenQuestions[slotKey]?.question_text === q.question_text
+                      }
+                    />
                   ))}
                 </div>
               )}
@@ -495,6 +525,28 @@ export default function CraftAPaper({ user }) {
   const [genJobId, setGenJobId] = useState(null);
   const [genStatus, setGenStatus] = useState(null); // latest polled snapshot
   const [genError, setGenError] = useState('');
+
+  // ============================================================
+  // FINAL PAPER ASSEMBLY (click-to-add, one chosen question per slot)
+  // ============================================================
+  // The single question the teacher picked for each slot (q1..q9), chosen by
+  // clicking "Add to paper" on one of the 5 AI candidates in the AI Assistance
+  // panel. null = slot not filled yet. After generation the middle "Question
+  // Paper" panel renders these as the final output.
+  const [chosenQuestions, setChosenQuestions] = useState({
+    q1: null, q2: null, q3: null, q4: null, q5: null, q6: null, q7: null, q8: null, q9: null,
+  });
+
+  // Add (or swap) the chosen question for a slot.
+  const chooseQuestion = (slot, question) =>
+    setChosenQuestions((prev) => ({ ...prev, [slot]: question }));
+
+  // Clear a slot's chosen question.
+  const clearChosenQuestion = (slot) =>
+    setChosenQuestions((prev) => ({ ...prev, [slot]: null }));
+
+  // Count of filled slots, for the final-paper progress summary.
+  const chosenCount = SLOT_ORDER.filter((s) => chosenQuestions[s]).length;
 
   // ============================================================
   // SECTION-SCOPED DRAG & DROP (UI-only; NOT persisted into questionPaper)
@@ -1475,14 +1527,130 @@ export default function CraftAPaper({ user }) {
               </div>
             </div>
 
-            {/* Section Palette: each section shows ONLY its own UNPLACED questions. */}
+            {/* Middle Panel: Question Paper.
+                - BEFORE generation (genStatus null): per-slot setup cards (pick
+                  chapter / domain / diagrams for each question).
+                - AFTER generation: the FINAL paper, one chosen question per slot,
+                  filled by clicking "Add to paper" in the AI Assistance panel. */}
             <div className="col-span-5 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex flex-col">
               <div className="p-6 border-b border-gray-200 bg-white">
-                <h2 className="text-lg font-semibold text-gray-900">Question Bank</h2>
-                <p className="text-xs text-gray-500 mt-1">
-                  Drag each question into its matching section of the paper.
-                </p>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Question Paper</h2>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {genStatus
+                        ? 'Click "Add to paper" on a question in AI Assistance to place it here.'
+                        : 'Set up each question, then click Generate.'}
+                    </p>
+                  </div>
+                  {genStatus && (
+                    <span
+                      className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                        chosenCount === SLOT_ORDER.length
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      {chosenCount}/{SLOT_ORDER.length} placed
+                    </span>
+                  )}
+                </div>
               </div>
+
+              {/* FINAL PAPER view (post-generation): chosen question per slot. */}
+              {genStatus ? (
+                <div className="flex-1 overflow-y-auto p-4 space-y-6">
+                  {SECTION_ORDER.map((sec) => (
+                    <div key={sec}>
+                      <div className="mb-3 border-b-2 border-gray-800 pb-2">
+                        <p className="text-sm font-bold text-gray-900">
+                          SECTION {sec}: {SECTION_META[sec].title}
+                        </p>
+                        <p className="mt-0.5 text-[11px] text-gray-600">{SECTION_META[sec].note}</p>
+                      </div>
+                      <div className="space-y-3">
+                        {SECTION_SLOTS[sec].map((slot) => {
+                          const q = chosenQuestions[slot];
+                          const qMcq = q && Array.isArray(q.options) && q.options.length > 0;
+                          return (
+                            <div
+                              key={slot}
+                              className={`rounded-lg border p-3 ${
+                                q ? 'border-blue-200 bg-white' : 'border-dashed border-gray-300 bg-gray-50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="text-xs font-bold text-gray-900">
+                                  Q{SLOT_NUMBER[slot]}
+                                  <span className="ml-2 font-normal text-gray-400">
+                                    {SLOT_MARKS[slot]} {SLOT_MARKS[slot] === 1 ? 'mark' : 'marks'}
+                                  </span>
+                                </span>
+                                {q && (
+                                  <button
+                                    type="button"
+                                    onClick={() => clearChosenQuestion(slot)}
+                                    className="rounded px-2 py-0.5 text-[11px] font-medium text-gray-500 transition-colors hover:bg-red-100 hover:text-red-600"
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
+
+                              {!q ? (
+                                <p className="mt-2 text-xs text-gray-400">
+                                  No question added yet.
+                                </p>
+                              ) : (
+                                <div className="mt-2">
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {q.question_text}
+                                  </p>
+                                  {qMcq ? (
+                                    <div className="mt-2 space-y-1">
+                                      <ul className="space-y-0.5 text-sm text-gray-700">
+                                        {q.options.map((opt, i) => (
+                                          <li key={i}>
+                                            {String.fromCharCode(65 + i)}. {opt}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      {q.correct_answer && (
+                                        <p className="text-xs font-semibold text-green-700">
+                                          Correct: {q.correct_answer}
+                                        </p>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="mt-2 space-y-1">
+                                      {q.model_answer && (
+                                        <p className="text-sm text-gray-700">
+                                          <span className="font-semibold">Answer: </span>
+                                          {q.model_answer}
+                                        </p>
+                                      )}
+                                      {Array.isArray(q.marking_scheme) && q.marking_scheme.length > 0 && (
+                                        <div className="text-xs text-gray-600">
+                                          <p className="font-semibold">Marking scheme:</p>
+                                          <ul className="ml-4 list-disc space-y-0.5">
+                                            {q.marking_scheme.map((point, i) => (
+                                              <li key={i}>{point}</li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
               <div className="flex-1 overflow-y-auto p-4 space-y-6">
                 {SECTION_ORDER.map((sec) => {
                   const unplaced = SECTION_SLOTS[sec].filter((s) => !placedSlots[s]);
@@ -1526,6 +1694,7 @@ export default function CraftAPaper({ user }) {
                   );
                 })}
               </div>
+              )}
             </div>
 
             {/* Middle Panel: Canvas 1 - Question Paper (central assembly canvas) */}
@@ -1648,7 +1817,12 @@ export default function CraftAPaper({ user }) {
                 </div>
               </div>
               <div className="flex-1 min-h-0 bg-white overflow-y-auto p-4">
-                <GenerationResults snapshot={genStatus} error={genError} />
+                <GenerationResults
+                  snapshot={genStatus}
+                  error={genError}
+                  chosenQuestions={chosenQuestions}
+                  onChoose={chooseQuestion}
+                />
               </div>
             </div>
           </div>
